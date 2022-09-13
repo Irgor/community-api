@@ -5,5 +5,6 @@ export enum ErrorMessages {
     POST_NOT_FOUND = 'Post not found',
     GET_POSTS_NOT_FOUND = 'Posts is empty',
     UPDATE_POST_ERROR = 'Error while updating post',
-    DELETE_POST_ERROR = 'Error while deleting post'
+    DELETE_POST_ERROR = 'Error while deleting post',
+    POST_IMAGE_WITHOUT_FILE = 'Theres no image to be uploaded'
 }

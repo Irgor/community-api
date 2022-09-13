@@ -1,26 +1,31 @@
+import dotenv from 'dotenv'; dotenv.config();
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from 'src/config/config';
-import Logger from '@utils/logger';
+import logger from '@utils/logger';
+
+
 import postRoutes from '@routes/post.routes';
 
 const router = express();
 
 mongoose.connect(config.mongo.url)
   .then(() => {
-    Logger.log('Mongo Connected');
+    logger.log('Mongo Connected');
     start();
   })
   .catch((error) => {
-    Logger.error('Unable to connect to mongo: ')
-    Logger.error(error);
+    logger.error('Unable to connect to mongo: ')
+    logger.error(error);
   });
 
 const start = () => {
   // CONFIG
   router.use(express.urlencoded({ extended: true }));
   router.use(express.json());
+  router.use(fileUpload());
 
   router.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -43,10 +48,10 @@ const start = () => {
   // ERROR HANDLER
   router.use((req, res, next) => {
     const error = new Error('Route not found');
-    Logger.error(error);
+    logger.error(error);
     return res.status(404).json({ error: error.message });
   })
 
   // START SERVER
-  http.createServer(router).listen(config.server.port, () => Logger.log(`Server is running on ${config.server.port}`))
+  http.createServer(router).listen(config.server.port, () => logger.log(`Server is running on ${config.server.port}`))
 }

@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { Response } from "express";
 import { ErrorMessages } from "./errorMessages";
-import Logger from "./logger";
+import logger from "@utils/logger";
 
 export function defaultCathError(res: Response, message: ErrorMessages, error?: Error): any {
-    Logger.error(message);
-    Logger.error(error);
+    logger.error(message);
+    logger.error(error);
     return res.status(500).json({ error: message });
 }
