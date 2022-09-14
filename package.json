@@ -32,8 +32,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf build/ && tsc",
+    "build": "rm -rf build",
     "start": "node build/server.js",
+    "postinstall": "tsc",
     "dev": "nodemon"
   },
   "repository": {
