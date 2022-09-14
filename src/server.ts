@@ -53,5 +53,5 @@ const start = () => {
   })
 
   // START SERVER
-  http.createServer(router).listen(config.server.port, () => logger.log(`Server is running on ${config.server.port}`))
+  http.createServer(router).listen(process.env.PORT || 3000, () => logger.log(`Server is running on ${process.env.PORT || 3000}`))
 }
