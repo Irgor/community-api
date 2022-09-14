@@ -3,7 +3,7 @@ import express from 'express';
 import fileUpload from 'express-fileupload';
 import http from 'http';
 import mongoose from 'mongoose';
-import { config } from 'src/config/config';
+import { config } from '@config/config'
 import logger from '@utils/logger';
 
 
