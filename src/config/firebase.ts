@@ -1,7 +1,13 @@
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getStorage } from 'firebase-admin/storage';
 
-const serviceAccount = require('../../.secret/comm-test-26f57-firebase-adminsdk-6qx8k-dc29f4f90b.json');
+const serviceAccount: any = {
+    projectId: process.env.PROJECT_ID,
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY
+}
+
+serviceAccount.privateKey = serviceAccount.privateKey.replace(/\\n/g, '\n')
 
 initializeApp({
     credential: cert(serviceAccount),
