@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import { config } from '@config/config'
 import logger from '@utils/logger';
 
+import userRoutes from '@routes/user.routes';
 import postRoutes from '@routes/post.routes';
 
 const router = express();
@@ -19,6 +20,7 @@ mongoose.connect(config.mongo.url)
     logger.error('Unable to connect to mongo: ')
     logger.error(error);
   });
+
 
 const start = () => {
   // CONFIG
@@ -39,16 +41,15 @@ const start = () => {
   });
 
   // ROUTES 
+  router.use('/users', userRoutes);
   router.use('/posts', postRoutes);
 
   // HEALTHCHECK
   router.get('/check', (req, res, next) => res.status(200).json({ status: 'OK' }))
 
   // ERROR HANDLER
-  router.use((req, res, next) => {
-    const error = new Error('Route not found');
-    logger.error(error);
-    return res.status(404).json({ error: error.message });
+  router.use((err: any, req: any, res: any, next: any) => {
+    res.status(500).send(err.message)
   })
 
   // START SERVER
