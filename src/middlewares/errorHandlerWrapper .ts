@@ -1,4 +1,4 @@
-import { asyncHandler } from "./errorHandler"
+import { asyncHandler } from "@middlewares/errorHandler"
 
 const errorWrapper = (...args: Function[]) => {
     const obj: any = {}

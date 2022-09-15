@@ -1,5 +1,5 @@
 import { databaseConfig } from "@config/database";
-import { firbaseConfig } from "./firebase";
+import { firbaseConfig } from "@config/firebase";
 
 
 export const config = {

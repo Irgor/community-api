@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 import { config } from '@config/config'
 import logger from '@utils/logger';
 
+import { auth } from '@middlewares/authMiddleware';
+
 import userRoutes from '@routes/user.routes';
 import postRoutes from '@routes/post.routes';
 
@@ -40,8 +42,13 @@ const start = () => {
     next();
   });
 
-  // ROUTES 
+  // PUBLIC ROUTES 
   router.use('/users', userRoutes);
+  
+  // AUTH MIDDLEWARE
+  router.use((req, res, next) => auth(req, res, next));
+  
+  // LOGGED ROUTES 
   router.use('/posts', postRoutes);
 
   // HEALTHCHECK
@@ -49,7 +56,7 @@ const start = () => {
 
   // ERROR HANDLER
   router.use((err: any, req: any, res: any, next: any) => {
-    res.status(500).send(err.message)
+    res.status(err.status).send(err.message)
   })
 
   // START SERVER

@@ -1,9 +1,8 @@
-import { Response } from "express";
-import { ErrorMessages } from "./errorMessages";
+import { ErrorMessages } from "@utils/errorMessages";
 import logger from "@utils/logger";
 
-export function defaultCathError(res: Response, message: ErrorMessages, error?: Error): any {
-    // logger.error(message);
-    // logger.error(error);
-    throw { message: message };
+export function defaultCathError(message: ErrorMessages, error?: Error, status = 500): any {
+    logger.error(message);
+    if (error) logger.error(error);
+    throw { message: message, status };
 }

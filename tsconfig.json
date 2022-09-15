@@ -27,6 +27,7 @@
     "baseUrl": "./src",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {
       "@config/*": ["config/*"],
+      "@middlewares/*": ["middlewares/*"],
       "@models/*": ["models/*"],
       "@controllers/*": ["controllers/*"],
       "@routes/*": ["routes/*"],

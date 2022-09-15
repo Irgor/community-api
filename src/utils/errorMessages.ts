@@ -1,10 +1,13 @@
 export enum ErrorMessages {
+    //USER
+    TOKEN_NOT_PROVIDED = 'THE USER TOKEN WAS NOT PROVIDED',
+
     //POST
-    CREATE_POST_ERROR = 'Error while creating post',
-    GET_POST_ERROR = 'Error while getting post',
-    POST_NOT_FOUND = 'Post not found',
-    GET_POSTS_NOT_FOUND = 'Posts is empty',
-    UPDATE_POST_ERROR = 'Error while updating post',
-    DELETE_POST_ERROR = 'Error while deleting post',
-    POST_IMAGE_WITHOUT_FILE = 'Theres no image to be uploaded'
+    CREATE_POST_ERROR = 'ERROR WHILE CREATING POST',
+    GET_POST_ERROR = 'ERROR WHILE GETTING POST',
+    POST_NOT_FOUND = 'POST NOT FOUND',
+    GET_POSTS_NOT_FOUND = 'POSTS IS EMPTY',
+    UPDATE_POST_ERROR = 'ERROR WHILE UPDATING POST',
+    DELETE_POST_ERROR = 'ERROR WHILE DELETING POST',
+    POST_IMAGE_WITHOUT_FILE = 'THERES NO IMAGE TO BE UPLOADED'
 }
