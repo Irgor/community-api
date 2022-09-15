@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 import { config } from '@config/config'
 import logger from '@utils/logger';
 
-
 import postRoutes from '@routes/post.routes';
 
 const router = express();
