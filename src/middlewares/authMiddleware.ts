@@ -16,7 +16,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
         idToken: auth
     }
 
-    const url = `${firbaseConfig.apiUrl}/accounts:lookup?key=${process.env.FIREBASE_API_KEY}`;
+    const url = `${firbaseConfig.apiUsersUrl}/accounts:lookup?key=${process.env.FIREBASE_API_KEY}`;
     await axios.post(url, body).catch(err => {
         defaultCathError(err.response.data.error.message);
     });

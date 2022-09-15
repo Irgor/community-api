@@ -24,9 +24,11 @@ initializeApp({
 const bucket = getStorage().bucket();
 
 
-const apiUrl = 'https://identitytoolkit.googleapis.com/v1'
+const apiUsersUrl = 'https://identitytoolkit.googleapis.com/v1'
+const apiTokenUrl = 'https://securetoken.googleapis.com/v1';
 
 export const firbaseConfig = {
     bucket,
-    apiUrl
+    apiUsersUrl,
+    apiTokenUrl
 }
