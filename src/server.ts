@@ -41,18 +41,18 @@ const start = () => {
 
     next();
   });
+  
+  // HEALTHCHECK
+  router.get('/check', (req, res, next) => res.status(200).json({ status: 'OK' }))
 
   // PUBLIC ROUTES 
   router.use('/users', userRoutes);
   
   // AUTH MIDDLEWARE
-  // router.use((req, res, next) => auth(req, res, next));
+  router.use((req, res, next) => auth(req, res, next));
   
   // LOGGED ROUTES 
   router.use('/posts', postRoutes);
-
-  // HEALTHCHECK
-  router.get('/check', (req, res, next) => res.status(200).json({ status: 'OK' }))
 
   // ERROR HANDLER
   router.use((err: any, req: any, res: any, next: any) => {
