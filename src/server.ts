@@ -49,7 +49,7 @@ const start = () => {
   router.use('/users', userRoutes);
   
   // AUTH MIDDLEWARE
-  // router.use((req, res, next) => auth(req, res, next));
+  router.use((req, res, next) => auth(req, res, next));
   
   // LOGGED ROUTES 
   router.use('/posts', postRoutes);
