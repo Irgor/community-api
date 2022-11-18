@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/', postController.create);
 router.post('/:id/image', postController.createImage);
-router.get('/', postController.get);
-router.get('/:id', postController.show)
+// router.get('/', postController.get);
+// router.get('/:id', postController.show)
 router.put('/:id', postController.update)
 router.delete('/:id', postController.destroy)
 

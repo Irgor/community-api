@@ -10,6 +10,7 @@ import { auth } from '@middlewares/authMiddleware';
 
 import userRoutes from '@routes/user.routes';
 import postRoutes from '@routes/post.routes';
+import publicPostRoutes from '@routes/publicPosts.routes';
 
 const router = express();
 
@@ -47,13 +48,14 @@ const start = () => {
 
   // PUBLIC ROUTES 
   router.use('/users', userRoutes);
+  router.use('/posts', publicPostRoutes);
   
   // AUTH MIDDLEWARE
   router.use((req, res, next) => auth(req, res, next));
   
   // LOGGED ROUTES 
   router.use('/posts', postRoutes);
-  
+
   // ERROR HANDLER
   router.use((err: any, req: any, res: any, next: any) => {
     res.status(err.status).send(err.message)
