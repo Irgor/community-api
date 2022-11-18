@@ -3,9 +3,20 @@ import { defaultCathError } from "@utils/requestHandling";
 import { firbaseConfig } from "@config/firebase";
 import axios from "axios";
 import { errorWrapper } from "@middlewares/errorHandlerWrapper ";
+import Profile from "@models/Profile.model";
+import { ErrorMessages } from "@utils/errorMessages";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
+    const {
+        email,
+        password,
+        name,
+        nickname,
+        phone,
+        bio,
+        banner,
+        picture,
+    } = req.body;
 
     const body = {
         email,
@@ -18,11 +29,23 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(err.response.data.error.message, err);
     });
 
-    if (userCreated?.data) {
-        return res.status(200).json(userCreated.data);
-    }
+    const userData = userCreated!.data;
 
-    return res.status(204);
+    const profile = new Profile({
+        email,
+        name,
+        nickname,
+        phone,
+        bio,
+        banner,
+        picture,
+    })
+
+    const createdProfile = await profile.save().catch(error => {
+        defaultCathError(ErrorMessages.CREATE_USER_ERROR, error)
+    });
+
+    return res.status(200).json({ ...userData, user: createdProfile });
 }
 
 const signin = async (req: Request, res: Response, next: NextFunction) => {
