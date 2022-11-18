@@ -65,7 +65,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await Profile.find({ email }).exec();
 
-    return res.status(200).json({ ...userData, user });
+    return res.status(200).json({ ...userData, user: user[0] });
 }
 
 const refresh = async (req: Request, res: Response, next: NextFunction) => {
