@@ -53,6 +53,7 @@ const start = () => {
   
   // LOGGED ROUTES 
   router.use('/posts', postRoutes);
+  
 
   // ERROR HANDLER
   router.use((err: any, req: any, res: any, next: any) => {
