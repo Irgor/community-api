@@ -61,11 +61,11 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(err.response.data.error.message, err);
     })
 
-    if (userLogged?.data) {
-        return res.status(200).json(userLogged.data);
-    }
+    const userData = userLogged!.data;
 
-    return res.status(204);
+    const user = await Profile.find({ email }).exec();
+
+    return res.status(200).json({ ...userData, user });
 }
 
 const refresh = async (req: Request, res: Response, next: NextFunction) => {
