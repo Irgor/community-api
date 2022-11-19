@@ -8,6 +8,7 @@ export interface Post {
     email: string,
     isPublic: boolean,
     isPosted: boolean,
+    likes: number,
     filePath: string
     created_at: Date,
     updated_at: Date,
@@ -24,6 +25,7 @@ const PostSchema: Schema = new Schema({
     description: { type: String, required: false },
     isPublic: { type: Boolean, required: false },
     isPosted: { type: Boolean, required: false },
+    likes: { type: Number, required: false },
 }, {
     timestamps: true,
 })

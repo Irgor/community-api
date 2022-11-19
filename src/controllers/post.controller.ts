@@ -73,7 +73,14 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    const posts = await Post.find({ isPosted: true }).exec();
+    const query = Post.find({ isPosted: true })
+
+    if (req.query.tags && typeof req.query.tags == 'string') {
+        const tagsArray = req.query.tags.split(',');
+        query.find({ tags: { $in: tagsArray } });
+    }
+
+    const posts = await query.exec()
 
     if (!posts) {
         return res.status(201).json({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
@@ -83,9 +90,15 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const tags = async (req: Request, res: Response, next: NextFunction) => {
-    const tags = await Post.find().select('tags').exec();
+    const tags = await Post.find().select('tags -_id').exec();
 
-    return res.status(200).json(tags);
+    const uniqueTags = [...new Set(tags.map(tag => tag.tags).flat())];
+
+    return res.status(200).json(uniqueTags);
+}
+
+const like = async (req: Request, res: Response) => {
+    
 }
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
