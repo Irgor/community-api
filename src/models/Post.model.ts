@@ -6,11 +6,12 @@ export interface Post {
     description: string,
     image: string,
     email: string,
-    isPublic: boolean,
     likes: number,
     likers: string[],
     filePath: string,
+    isPublic: boolean,
     isPurchasable: boolean,
+    isBuyed: boolean,
     created_at: Date,
     updated_at: Date,
 }
@@ -26,6 +27,7 @@ const PostSchema: Schema = new Schema({
     description: { type: String, required: false },
     isPublic: { type: Boolean, required: false },
     isPurchasable: { type: Boolean, required: false },
+    isBuyed: { type: Boolean, required: false },
     likes: { type: Number, required: false },
     likers: [{ type: String, required: false }],
 }, {
