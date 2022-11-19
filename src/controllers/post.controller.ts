@@ -184,7 +184,7 @@ const purchase = async (req: Request, res: Response) => {
     return res.status(200).json(updatedPost)
 }
 
-const ouer = async (req: Request, res: Response) => {
+const our = async (req: Request, res: Response) => {
     const posts = await Post.find({ isBuyed: true }).exec();
 
     if (!posts) {
@@ -224,4 +224,4 @@ const destroy = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({ deleted: true });
 };
 
-export const postController = errorWrapper(create, createImage, show, get, update, destroy, tags, likes, purchasables, purchase, ouer);
+export const postController = errorWrapper(create, createImage, show, get, update, destroy, tags, likes, purchasables, purchase, our);
