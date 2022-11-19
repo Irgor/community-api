@@ -8,6 +8,7 @@ router.post('/:id/image', postController.createImage);
 // router.get('/', postController.get);
 // router.get('/:id', postController.show)
 router.put('/:id', postController.update)
+router.post('/:id/like', postController.like)
 router.delete('/:id', postController.destroy)
 
 export = router;

@@ -7,9 +7,10 @@ export interface Post {
     image: string,
     email: string,
     isPublic: boolean,
-    isPosted: boolean,
     likes: number,
-    filePath: string
+    likers: string[],
+    filePath: string,
+    isPurchasable: boolean,
     created_at: Date,
     updated_at: Date,
 }
@@ -24,8 +25,9 @@ const PostSchema: Schema = new Schema({
     tags: [{ type: String, required: false }],
     description: { type: String, required: false },
     isPublic: { type: Boolean, required: false },
-    isPosted: { type: Boolean, required: false },
+    isPurchasable: { type: Boolean, required: false },
     likes: { type: Number, required: false },
+    likers: [{ type: String, required: false }],
 }, {
     timestamps: true,
 })

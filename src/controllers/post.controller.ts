@@ -23,8 +23,10 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
         tags,
         description,
         email,
-        isPosted,
-        isPublic
+        isPublic,
+        isPurchasable: false,
+        likes: 0,
+        likers: []
     })
 
     const createdPost = await post.save().catch(error => {
@@ -72,7 +74,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(ErrorMessages.GET_POST_ERROR, error);
     });
 
-    if (!post || !post.isPosted) {
+    if (!post) {
         return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
@@ -80,11 +82,16 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    const query = Post.find({ isPosted: true })
+    const query = Post.find();
 
     if (req.query.tags && typeof req.query.tags == 'string') {
         const tagsArray = req.query.tags.split(',');
         query.find({ tags: { $in: tagsArray } });
+    }
+
+    if (req.query.email) {
+        const email = req.query.email;
+        query.find({ email });
     }
 
     const posts = await query.exec()
@@ -105,7 +112,35 @@ const tags = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const like = async (req: Request, res: Response) => {
-    
+    const id = req.params.id;
+
+    const { userId } = req.body;
+
+    const post = await Post.findById(id).catch(error => {
+        defaultCathError(ErrorMessages.GET_POST_ERROR, error);
+    });
+
+    if (!post) {
+        return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
+    }
+
+    const alredyLiked = post.likers.filter(liker => liker == userId).length;
+
+    if (!alredyLiked) {
+        post.likes += 1;
+        post.likers = [...post.likers, userId];
+    } else {
+        post.likes -= 1;
+        post.likers = post.likers.filter(liker => liker != userId);
+    }
+
+    post.set(post)
+
+    const updatedPost = await post.save().catch(error => {
+        defaultCathError(ErrorMessages.UPDATE_POST_ERROR, error);
+    })
+
+    return res.status(200).json(updatedPost)
 }
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
@@ -138,4 +173,4 @@ const destroy = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({ deleted: true });
 };
 
-export const postController = errorWrapper(create, createImage, show, get, update, destroy, tags);
+export const postController = errorWrapper(create, createImage, show, get, update, destroy, tags, like);
