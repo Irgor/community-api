@@ -10,18 +10,21 @@ import { schedulePost } from "schedulers/post.scheduler";
 const bucket = firbaseConfig.bucket;
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
-    const { title, tags, description, date } = req.body;
 
+
+    const { title, tags, description, email, isPosted, isPublic, date } = req.body;
 
     if (date) {
-        console.log("Chegou aqui")
         return await schedulePost(title, tags, description, new Date(date))
-    } 
+    }
 
     const post = new Post({
         title,
         tags,
         description,
+        email,
+        isPosted,
+        isPublic
     })
 
     const createdPost = await post.save().catch(error => {
@@ -69,7 +72,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(ErrorMessages.GET_POST_ERROR, error);
     });
 
-    if (!post) {
+    if (!post || !post.isPosted) {
         return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
@@ -77,7 +80,14 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    const posts = await Post.find();
+    const query = Post.find({ isPosted: true })
+
+    if (req.query.tags && typeof req.query.tags == 'string') {
+        const tagsArray = req.query.tags.split(',');
+        query.find({ tags: { $in: tagsArray } });
+    }
+
+    const posts = await query.exec()
 
     if (!posts) {
         return res.status(201).json({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
@@ -85,6 +95,18 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(200).json(posts);
 };
+
+const tags = async (req: Request, res: Response, next: NextFunction) => {
+    const tags = await Post.find().select('tags -_id').exec();
+
+    const uniqueTags = [...new Set(tags.map(tag => tag.tags).flat())];
+
+    return res.status(200).json(uniqueTags);
+}
+
+const like = async (req: Request, res: Response) => {
+    
+}
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
@@ -116,8 +138,4 @@ const destroy = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({ deleted: true });
 };
 
-export const postController = errorWrapper(create, createImage, show, get, update, destroy);
-
-export {
-    create
-}
+export const postController = errorWrapper(create, createImage, show, get, update, destroy, tags);
