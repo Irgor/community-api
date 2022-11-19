@@ -25,9 +25,9 @@ const PostSchema: Schema = new Schema({
     tags: [{ type: String, required: false }],
     description: { type: String, required: false },
     isPublic: { type: Boolean, required: false },
-    isPurchasable: { type: Boolean, required: false },
-    likes: { type: Number, required: false },
-    likers: [{ type: String, required: false }],
+    isPurchasable: { type: Boolean, required: false, default: false },
+    likes: { type: Number, required: false, default: 0 },
+    likers: [{ type: String, required: false, default: [] }],
 }, {
     timestamps: true,
 })

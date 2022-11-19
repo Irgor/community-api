@@ -13,7 +13,7 @@ const dateToCron = (date: Date) => {
     return `${minutes} ${hours} ${days} ${months} ${dayOfWeek}`;
 };
 
-export const schedulePost = async (title: string, tags: string[], description: string, date: Date) => {
+export const schedulePost = async (title: string, tags: string[], description: string, date: Date, email: string, isPublic: boolean) => {
     
     const cronDate = dateToCron(date);
 
@@ -25,6 +25,11 @@ export const schedulePost = async (title: string, tags: string[], description: s
                 title,
                 tags,
                 description,
+                email,
+                isPublic,
+                isPurchasable: false,
+                likes: 0,
+                likers: []
             })
 
             const createdPost = await post.save().catch(error => {

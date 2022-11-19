@@ -12,10 +12,10 @@ const bucket = firbaseConfig.bucket;
 const create = async (req: Request, res: Response, next: NextFunction) => {
 
 
-    const { title, tags, description, email, isPosted, isPublic, date } = req.body;
+    const { title, tags, description, email, isPublic, date } = req.body;
 
     if (date) {
-        return await schedulePost(title, tags, description, new Date(date))
+        return await schedulePost(title, tags, description, new Date(date), email, isPublic)
     }
 
     const post = new Post({
