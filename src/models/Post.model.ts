@@ -25,11 +25,11 @@ const PostSchema: Schema = new Schema({
     filePath: { type: String, required: false },
     tags: [{ type: String, required: false }],
     description: { type: String, required: false },
-    isPublic: { type: Boolean, required: false },
-    isPurchasable: { type: Boolean, required: false },
-    isBuyed: { type: Boolean, required: false },
-    likes: { type: Number, required: false },
-    likers: [{ type: String, required: false }],
+    isPublic: { type: Boolean, required: false, default: true },
+    isBuyed: { type: Boolean, required: false, default: false },
+    isPurchasable: { type: Boolean, required: false, default: false },
+    likes: { type: Number, required: false, default: 0 },
+    likers: [{ type: String, required: false, default: [] }],
 }, {
     timestamps: true,
 })
