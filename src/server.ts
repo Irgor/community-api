@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import { config } from '@config/config'
 import logger from '@utils/logger';
 
-import { auth } from '@middlewares/authMiddleware';
+import { auth } from '@middlewares/auth.middleware';
 
 import userRoutes from '@routes/user.routes';
 import postRoutes from '@routes/post.routes';

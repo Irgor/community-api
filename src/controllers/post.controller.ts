@@ -5,11 +5,18 @@ import { defaultCathError } from "@utils/requestHandling";
 import { firbaseConfig } from "@config/firebase";
 import { UploadedFile } from "express-fileupload";
 import { errorWrapper } from "@middlewares/errorHandlerWrapper ";
+import { schedulePost } from "schedulers/post.scheduler";
 
 const bucket = firbaseConfig.bucket;
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
-    const { title, tags, description } = req.body;
+    const { title, tags, description, date } = req.body;
+
+
+    if (date) {
+        console.log("Chegou aqui")
+        return await schedulePost(title, tags, description, new Date(date))
+    } 
 
     const post = new Post({
         title,
@@ -110,3 +117,7 @@ const destroy = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const postController = errorWrapper(create, createImage, show, get, update, destroy);
+
+export {
+    create
+}
