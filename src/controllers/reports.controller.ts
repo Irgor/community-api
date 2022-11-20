@@ -13,7 +13,12 @@ const all = async (req: Request, res: Response, next: NextFunction) => {
     }
     const posts = await query.exec();
 
-    const tags = posts.map(post => post.tags);
+    let tags;
+    if (req.query.tags && typeof req.query.tags == 'string') {
+        tags = req.query.tags.split(',');
+    } else {
+        tags = posts.map(post => post.tags);
+    }
 
     const uniqueTags = [...new Set(tags.flat())];
 
@@ -22,7 +27,9 @@ const all = async (req: Request, res: Response, next: NextFunction) => {
 
     for (let post of posts) {
         for (let tag of post.tags) {
-            likeByTags.set(tag, likeByTags.get(tag) + post.likes);
+            if (uniqueTags.includes(tag)) {
+                likeByTags.set(tag, likeByTags.get(tag) + post.likes);
+            }
         }
     }
 
@@ -43,4 +50,18 @@ const emails = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).send(emails.sort());
 }
 
-export const reportsController = errorWrapper(all, emails);
+const infos = async (req: Request, res: Response) => {
+    const accounts = await Profile.count().exec();
+
+    const posts = await Post.find({ isPublic: true }).exec();
+
+    const profit = posts.map(post => post.isBuyed).length * 90;
+
+    const tags: any = posts.map(post => post.tags);
+
+    const uniqueTags = [...new Set(tags.flat())];
+
+    return res.status(200).send({ accounts, posts: posts.length, profit, tags: uniqueTags.length });
+}
+
+export const reportsController = errorWrapper(all, emails, infos);
