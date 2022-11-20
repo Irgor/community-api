@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Post from "@models/Post.model";
+import Profile from "@models/Profile.model";
 import { ErrorMessages } from "@utils/errorMessages";
 import { defaultCathError } from "@utils/requestHandling";
 import { firbaseConfig } from "@config/firebase";
@@ -79,7 +80,9 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
         return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
-    return res.status(200).json(post);
+    const owner = await Profile.find({ email: post.email }).exec();
+
+    return res.status(200).json({ ...post.toJSON(), owner });
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
