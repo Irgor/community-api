@@ -82,7 +82,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 
     const owner = await Profile.find({ email: post.email }).exec();
 
-    return res.status(200).json({ ...post.toJSON(), owner });
+    return res.status(200).json({ ...post.toJSON(), owner: owner[0] });
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
