@@ -15,10 +15,6 @@ const LIKES_TO_BUY_POST = 5;
 const create = async (req: Request, res: Response, next: NextFunction) => {
     const { title, tags, description, email, isPublic, date } = req.body;
 
-    if (date) {
-        return await schedulePost(title, tags, description, new Date(date), email, isPublic)
-    }
-
     const post = new Post({
         title,
         tags,
@@ -27,6 +23,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
         isPublic,
         isPurchasable: false,
         isBuyed: false,
+        isPublished: date ? false : true,
         likes: 0,
         likers: []
     })
@@ -34,6 +31,10 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     const createdPost = await post.save().catch(error => {
         defaultCathError(ErrorMessages.CREATE_POST_ERROR, error)
     });
+
+    if (date) {
+        schedulePost(new Date(date), post.id)
+    }
 
     return res.status(201).json(createdPost);
 };
@@ -86,7 +87,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    const query = Post.find();
+    const query = Post.find({ isPublished: true });
 
     if (req.query.tags && typeof req.query.tags == 'string') {
         const tagsArray = req.query.tags.split(',');
@@ -114,7 +115,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const tags = async (req: Request, res: Response, next: NextFunction) => {
-    const tags = await Post.find().select('tags -_id').exec();
+    const tags = await Post.find({ isPublished: true }).select('tags -_id').exec();
 
     const uniqueTags = [...new Set(tags.map(tag => tag.tags).flat())];
 

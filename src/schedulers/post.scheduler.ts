@@ -1,7 +1,7 @@
-import Post from "@models/Post.model";
 import * as schedule from "node-schedule";
-import { defaultCathError } from '@utils/requestHandling';
-import { ErrorMessages } from '@utils/errorMessages';
+import Post from "@models/Post.model";
+import { defaultCathError } from "@utils/requestHandling";
+import { ErrorMessages } from "@utils/errorMessages";
 
 const dateToCron = (date: Date) => {
     const minutes = date.getMinutes();
@@ -13,30 +13,22 @@ const dateToCron = (date: Date) => {
     return `${minutes} ${hours} ${days} ${months} ${dayOfWeek}`;
 };
 
-export const schedulePost = async (title: string, tags: string[], description: string, date: Date, email: string, isPublic: boolean) => {
+export const schedulePost = async (date: Date, id: string) => {
     
     const cronDate = dateToCron(date);
 
     schedule.scheduleJob(cronDate, async () => {
-            
-            const post = new Post({
-                title,
-                tags,
-                description,
-                email,
-                isPublic,
-                isPurchasable: false,
-                likes: 0,
-                likers: []
+        const post = await Post.findById(id).catch(error => {
+            defaultCathError(ErrorMessages.GET_POST_ERROR, error);
+        });
+    
+        if (post) {
+            post.set({ isPublished: true });
+            await post.save().catch(error => {
+                defaultCathError(ErrorMessages.UPDATE_POST_ERROR, error);
             })
-
-            const createdPost = await post.save().catch(error => {
-                defaultCathError(ErrorMessages.CREATE_POST_ERROR, error)
-            });
-
-            schedule.gracefulShutdown().then(() => process.exit(0))
-            return createdPost;
-        })
+        }
+    });
 
     return null;
 }

@@ -25,6 +25,7 @@ const PostSchema: Schema = new Schema({
     filePath: { type: String, required: false },
     tags: [{ type: String, required: false }],
     description: { type: String, required: false },
+    isPublished: { type: Boolean, required: false, default: false },
     isPublic: { type: Boolean, required: false, default: true },
     isBuyed: { type: Boolean, required: false, default: false },
     isPurchasable: { type: Boolean, required: false, default: false },
