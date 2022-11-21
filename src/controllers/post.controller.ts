@@ -87,11 +87,11 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    const query = Post.find({ isPublished: true });
+    const query = Post.find();
 
     if (req.query.tags && typeof req.query.tags == 'string') {
         const tagsArray = req.query.tags.split(',');
-        query.find({ tags: { $in: tagsArray } });
+        query.find({ tags: { $in: tagsArray }, isPublished: true });
     }
 
     if (req.query.email) {
