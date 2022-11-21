@@ -87,7 +87,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
-    const query = Post.find({ isPublished: true });
+    const query = Post.find();
 
     if (req.query.tags && typeof req.query.tags == 'string') {
         const tagsArray = req.query.tags.split(',');
@@ -97,6 +97,10 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.email) {
         const email = req.query.email;
         query.find({ email });
+    }
+
+    if (!req.query.email) {
+        query.find({ isPublished: true })
     }
 
     const skip = req.query.skip ? +req.query.skip : 0;
