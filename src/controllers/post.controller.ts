@@ -91,12 +91,16 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
 
     if (req.query.tags && typeof req.query.tags == 'string') {
         const tagsArray = req.query.tags.split(',');
-        query.find({ tags: { $in: tagsArray }, isPublished: true });
+        query.find({ tags: { $in: tagsArray } });
     }
 
     if (req.query.email) {
         const email = req.query.email;
         query.find({ email });
+    }
+
+    if (!req.query.email) {
+        query.find({ isPublished: true })
     }
 
     const skip = req.query.skip ? +req.query.skip : 0;
