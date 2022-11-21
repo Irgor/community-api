@@ -10,6 +10,7 @@ const all = async (req: Request, res: Response, next: NextFunction) => {
     const query = Post.find({ isPublic: true });
     if (email) {
         query.find({ email });
+        let a = 10;
     }
     const posts = await query.exec();
 
