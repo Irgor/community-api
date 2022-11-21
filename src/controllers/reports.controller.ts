@@ -55,13 +55,15 @@ const infos = async (req: Request, res: Response) => {
 
     const posts = await Post.find({ isPublic: true }).exec();
 
-    const profit = posts.filter(post => post.isBuyed).length * 90;
+    const buyedPosts = posts.filter(post => post.isBuyed).length;
+
+    const profit = buyedPosts * 90;
 
     const tags: any = posts.map(post => post.tags);
 
     const uniqueTags = [...new Set(tags.flat())];
 
-    return res.status(200).send({ accounts, posts: posts.length, profit, tags: uniqueTags.length });
+    return res.status(200).send({ accounts, posts: posts.length, profit, tags: uniqueTags.length, buyedPosts });
 }
 
 export const reportsController = errorWrapper(all, emails, infos);
