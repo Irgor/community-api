@@ -55,7 +55,7 @@ const infos = async (req: Request, res: Response) => {
 
     const posts = await Post.find({ isPublic: true }).exec();
 
-    const profit = posts.map(post => post.isBuyed).length * 90;
+    const profit = posts.filter(post => post.isBuyed).length * 90;
 
     const tags: any = posts.map(post => post.tags);
 
