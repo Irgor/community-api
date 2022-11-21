@@ -10,7 +10,7 @@ import { schedulePost } from "schedulers/post.scheduler";
 
 const bucket = firbaseConfig.bucket;
 
-const LIKES_TO_BUY_POST = 5;
+const LIKES_TO_BUY_POST = 2;
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
     const { title, tags, description, email, isPublic, date } = req.body;
