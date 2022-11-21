@@ -10,7 +10,6 @@ const all = async (req: Request, res: Response, next: NextFunction) => {
     const query = Post.find({ isPublic: true });
     if (email) {
         query.find({ email });
-        let a = 10;
     }
     const posts = await query.exec();
 
@@ -36,12 +35,36 @@ const all = async (req: Request, res: Response, next: NextFunction) => {
 
     const entries = [['tag', 'likes'], ...Object.entries(Object.fromEntries(likeByTags))];
 
-    // const workbook = XLSX.utils.book_new();
-    // const worksheet = XLSX.utils.aoa_to_sheet(entries);
-    // XLSX.utils.book_append_sheet(workbook, worksheet, 'likeByTags');
-
     return res.status(200).send(entries);
 };
+
+const count = async (req: Request, res: Response, next: NextFunction) => {
+    const email = req.query.email;
+
+    const query = Post.find({ isPublic: true });
+    if (email) {
+        query.find({ email });
+    }
+    const posts = await query.exec();
+
+    const tags = posts.map(post => post.tags);
+    const uniqueTags = [...new Set(tags.flat())];
+
+    const postsBytag = new Map();
+    uniqueTags.forEach(tag => postsBytag.set(tag, 0));
+
+    for (let post of posts) {
+        for (let tag of post.tags) {
+            if (post.tags.includes(tag)) {
+                postsBytag.set(tag, postsBytag.get(tag) + 1);
+            }
+        }
+    }
+
+    const entries = [['tag', 'numero de posts'], ...Object.entries(Object.fromEntries(postsBytag))];
+
+    return res.status(200).send(entries);
+}
 
 const emails = async (req: Request, res: Response, next: NextFunction) => {
     const result = await Profile.find().select('email -_id').exec();
@@ -67,4 +90,4 @@ const infos = async (req: Request, res: Response) => {
     return res.status(200).send({ accounts, posts: posts.length, profit, tags: uniqueTags.length, buyedPosts });
 }
 
-export const reportsController = errorWrapper(all, emails, infos);
+export const reportsController = errorWrapper(all, emails, infos, count);
