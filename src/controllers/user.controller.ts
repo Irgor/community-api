@@ -45,7 +45,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(ErrorMessages.CREATE_USER_ERROR, error)
     });
 
-    return res.status(200).json({ ...userData, user: createdProfile });
+    return res.status(200).send({ ...userData, user: createdProfile });
 }
 
 const signin = async (req: Request, res: Response, next: NextFunction) => {
@@ -65,7 +65,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await Profile.find({ email }).exec();
 
-    return res.status(200).json({ ...userData, user: user[0] });
+    return res.status(200).send({ ...userData, user: user[0] });
 }
 
 const refresh = async (req: Request, res: Response, next: NextFunction) => {
@@ -81,7 +81,7 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(err.response.data.error.message, err);
     });
 
-    return res.status(200).json(tokenRefreshed!.data);
+    return res.status(200).send(tokenRefreshed!.data);
 }
 
 export const userController = errorWrapper(signup, signin, refresh)

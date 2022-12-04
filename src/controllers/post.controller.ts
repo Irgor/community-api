@@ -36,7 +36,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
         schedulePost(new Date(date), post.id)
     }
 
-    return res.status(201).json(createdPost);
+    return res.status(201).send(createdPost);
 };
 
 const createImage = async (req: Request, res: Response, next: NextFunction) => {
@@ -44,7 +44,7 @@ const createImage = async (req: Request, res: Response, next: NextFunction) => {
 
     const file = req.files!.image as UploadedFile;
     if (!file) {
-        return res.status(400).json({ message: ErrorMessages.POST_IMAGE_WITHOUT_FILE });
+        return res.status(400).send({ message: ErrorMessages.POST_IMAGE_WITHOUT_FILE });
     }
 
     const post = await Post.findById(id).catch(error => {
@@ -52,7 +52,7 @@ const createImage = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!post) {
-        return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
+        return res.status(404).send({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
     const fileName = `${post.title}_${file.name}`;
@@ -67,7 +67,7 @@ const createImage = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(ErrorMessages.UPDATE_POST_ERROR, error);
     })
 
-    res.status(200).json(updatedPost);
+    res.status(200).send(updatedPost);
 }
 
 const show = async (req: Request, res: Response, next: NextFunction) => {
@@ -78,12 +78,12 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!post) {
-        return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
+        return res.status(404).send({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
     const owner = await Profile.find({ email: post.email }).exec();
 
-    return res.status(200).json({ ...post.toJSON(), owner: owner[0] });
+    return res.status(200).send({ ...post.toJSON(), owner: owner[0] });
 };
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
@@ -112,7 +112,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const posts = await query.exec()
 
     if (!posts) {
-        return res.status(201).json({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
+        return res.status(201).send({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
     }
 
     return res.status(200).send(posts);
@@ -123,7 +123,7 @@ const tags = async (req: Request, res: Response, next: NextFunction) => {
 
     const uniqueTags = [...new Set(tags.map(tag => tag.tags).flat())];
 
-    return res.status(200).json(uniqueTags);
+    return res.status(200).send(uniqueTags);
 }
 
 const likes = async (req: Request, res: Response) => {
@@ -136,7 +136,7 @@ const likes = async (req: Request, res: Response) => {
     });
 
     if (!post) {
-        return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
+        return res.status(404).send({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
     const alredyLiked = post.likers.filter(liker => liker == userId).length;
@@ -157,17 +157,17 @@ const likes = async (req: Request, res: Response) => {
         defaultCathError(ErrorMessages.UPDATE_POST_ERROR, error);
     })
 
-    return res.status(200).json(updatedPost)
+    return res.status(200).send(updatedPost)
 }
 
 const purchasables = async (req: Request, res: Response) => {
     const posts = await Post.find({ isPurchasable: true }).exec();
 
     if (!posts) {
-        return res.status(201).json({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
+        return res.status(201).send({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
     }
 
-    return res.status(200).json(posts);
+    return res.status(200).send(posts);
 }
 
 const purchase = async (req: Request, res: Response) => {
@@ -178,7 +178,7 @@ const purchase = async (req: Request, res: Response) => {
     });
 
     if (!post) {
-        return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
+        return res.status(404).send({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
     post.isBuyed = true;
@@ -189,17 +189,17 @@ const purchase = async (req: Request, res: Response) => {
         defaultCathError(ErrorMessages.UPDATE_POST_ERROR, error);
     })
 
-    return res.status(200).json(updatedPost)
+    return res.status(200).send(updatedPost)
 }
 
 const our = async (req: Request, res: Response) => {
     const posts = await Post.find({ isBuyed: true }).exec();
 
     if (!posts) {
-        return res.status(201).json({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
+        return res.status(201).send({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
     }
 
-    return res.status(200).json(posts);
+    return res.status(200).send(posts);
 }
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
@@ -210,7 +210,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!post) {
-        return res.status(404).json({ message: ErrorMessages.POST_NOT_FOUND });
+        return res.status(404).send({ message: ErrorMessages.POST_NOT_FOUND });
     }
 
     post.set(req.body)
@@ -219,7 +219,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(ErrorMessages.UPDATE_POST_ERROR, error);
     })
 
-    return res.status(200).json(updatedPost)
+    return res.status(200).send(updatedPost)
 };
 
 const destroy = async (req: Request, res: Response, next: NextFunction) => {
@@ -229,7 +229,7 @@ const destroy = async (req: Request, res: Response, next: NextFunction) => {
         defaultCathError(ErrorMessages.DELETE_POST_ERROR, error);
     });
 
-    return res.status(200).json({ deleted: true });
+    return res.status(200).send({ deleted: true });
 };
 
 export const postController = errorWrapper(create, createImage, show, get, update, destroy, tags, likes, purchasables, purchase, our);
