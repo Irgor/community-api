@@ -6,7 +6,7 @@ import { defaultCathError } from "../utils/requestHandling";
 import { firbaseConfig } from "../config/firebase";
 import { UploadedFile } from "express-fileupload";
 import { errorWrapper } from "../middlewares/errorHandlerWrapper ";
-import { schedulePost } from "schedulers/post.scheduler";
+import { schedulePost } from "../schedulers/post.scheduler";
 
 const bucket = firbaseConfig.bucket;
 
