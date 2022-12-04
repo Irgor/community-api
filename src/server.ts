@@ -4,15 +4,15 @@ import fileUpload from 'express-fileupload';
 import http from 'http';
 import mongoose from 'mongoose';
 
-import { config } from '@config/config'
-import logger from '@utils/logger';
+import { config } from './config/config'
+import logger from './utils/logger';
 
-import { auth } from '@middlewares/auth.middleware';
+import { auth } from './middlewares/auth.middleware';
 
-import userRoutes from '@routes/user.routes';
-import postRoutes from '@routes/post.routes';
-import reportsRoutes from '@routes/reports.routes';
-import publicPostRoutes from '@routes/publicPosts.routes';
+import userRoutes from './routes/user.routes';
+import postRoutes from './routes/post.routes';
+import reportsRoutes from './routes/reports.routes';
+import publicPostRoutes from './routes/publicPosts.routes';
 
 const router = express();
 

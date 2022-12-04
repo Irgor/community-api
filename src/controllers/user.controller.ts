@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { defaultCathError } from "@utils/requestHandling";
-import { firbaseConfig } from "@config/firebase";
+import { defaultCathError } from "../utils/requestHandling";
+import { firbaseConfig } from "../config/firebase";
 import axios from "axios";
-import { errorWrapper } from "@middlewares/errorHandlerWrapper ";
-import Profile from "@models/Profile.model";
-import { ErrorMessages } from "@utils/errorMessages";
+import { errorWrapper } from "../middlewares/errorHandlerWrapper ";
+import Profile from "../models/Profile.model";
+import { ErrorMessages } from "../utils/errorMessages";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
     const {

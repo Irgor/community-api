@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import Post from "@models/Post.model";
-import Profile from "@models/Profile.model";
-import { ErrorMessages } from "@utils/errorMessages";
-import { defaultCathError } from "@utils/requestHandling";
-import { firbaseConfig } from "@config/firebase";
+import Post from "../models/Post.model";
+import Profile from "../models/Profile.model";
+import { ErrorMessages } from "../utils/errorMessages";
+import { defaultCathError } from "../utils/requestHandling";
+import { firbaseConfig } from "../config/firebase";
 import { UploadedFile } from "express-fileupload";
-import { errorWrapper } from "@middlewares/errorHandlerWrapper ";
+import { errorWrapper } from "../middlewares/errorHandlerWrapper ";
 import { schedulePost } from "schedulers/post.scheduler";
 
 const bucket = firbaseConfig.bucket;

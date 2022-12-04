@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import Post from "@models/Post.model";
-import Profile from "@models/Profile.model";
-import { errorWrapper } from "@middlewares/errorHandlerWrapper ";
+import Post from "../models/Post.model";
+import Profile from "../models/Profile.model";
+import { errorWrapper } from "../middlewares/errorHandlerWrapper ";
 import * as XLSX from 'xlsx';
 
 const all = async (req: Request, res: Response, next: NextFunction) => {

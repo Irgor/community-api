@@ -1,7 +1,7 @@
 import * as schedule from "node-schedule";
-import Post from "@models/Post.model";
-import { defaultCathError } from "@utils/requestHandling";
-import { ErrorMessages } from "@utils/errorMessages";
+import Post from "../models/Post.model";
+import { defaultCathError } from "../utils/requestHandling";
+import { ErrorMessages } from "../utils/errorMessages";
 
 const dateToCron = (date: Date) => {
     const minutes = date.getMinutes();

@@ -1,9 +1,9 @@
-import { firbaseConfig } from '@config/firebase';
-import { ErrorMessages } from '@utils/errorMessages';
+import { firbaseConfig } from '../config/firebase';
+import { ErrorMessages } from '../utils/errorMessages';
 import { NextFunction, Request, Response } from 'express';
 import axios from "axios";
-import { asyncHandler } from "@middlewares/errorHandler"
-import { defaultCathError } from '@utils/requestHandling';
+import { asyncHandler } from "../middlewares/errorHandler"
+import { defaultCathError } from '../utils/requestHandling';
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const auth = req.headers.authorization;
