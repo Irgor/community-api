@@ -45,8 +45,8 @@ const start = () => {
   });
 
   // HEALTHCHECK
-  router.get('/', (req, res, next) => res.status(200).json({ status: 'OK' }))
-  router.get('/check', (req, res, next) => res.status(200).json({ status: 'OK' }))
+  router.get('/', (req, res, next) => res.status(200).send({ status: 'OK' }))
+  router.get('/check', (req, res, next) => res.status(200).send({ status: 'OK' }))
 
   // PUBLIC ROUTES 
   router.use('/users', userRoutes);

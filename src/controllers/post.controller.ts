@@ -115,7 +115,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
         return res.status(201).json({ message: ErrorMessages.GET_POSTS_NOT_FOUND });
     }
 
-    return res.status(200).json(posts);
+    return res.status(200).send(posts);
 };
 
 const tags = async (req: Request, res: Response, next: NextFunction) => {
