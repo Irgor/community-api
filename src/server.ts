@@ -15,15 +15,15 @@ import publicPostRoutes from '@routes/publicPosts.routes';
 
 const router = express();
 
-// mongoose.connect(config.mongo.url)
-//   .then(() => {
-//     logger.log('Mongo Connected');
-//     start();
-//   })
-//   .catch((error) => {
-//     logger.error('Unable to connect to mongo: ')
-//     logger.error(error);
-//   });
+mongoose.connect(config.mongo.url)
+  .then(() => {
+    logger.log('Mongo Connected');
+    start();
+  })
+  .catch((error) => {
+    logger.error('Unable to connect to mongo: ')
+    logger.error(error);
+  });
 
 
 const start = () => {
@@ -67,4 +67,3 @@ const start = () => {
   // START SERVER
   http.createServer(router).listen(process.env.PORT || 3333, () => console.log(`Server is running on ${process.env.PORT || 3333}`))
 }
-start();
