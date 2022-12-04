@@ -87,7 +87,7 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const update = async (req: Request, res: Response) => {
-    const { id,
+    const { _id,
         name,
         nickname,
         phone,
@@ -96,7 +96,7 @@ const update = async (req: Request, res: Response) => {
         picture,
     } = req.body;
 
-    const profile = await Profile.findById(id)
+    const profile = await Profile.findById(_id)
 
     if (!profile) {
         return res.status(404).send({ message: ErrorMessages.USER_NOT_FOUND });
