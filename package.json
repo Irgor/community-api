@@ -36,10 +36,11 @@
     "ext": "ts, js"
   },
   "scripts": {
+    "prebuild": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "dev": "nodemon",
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/server.js"
+    "build": "sucrase ./src -d ./dist --transforms typescript,imports",
+    "pre-prod": "rimraf dist && sucrase ./src -d ./dist --transforms typescript,imports",
+    "prepare:enviroment": "node scripts/dev-enviroment.cjs"
   },
   "repository": {
     "type": "git",
