@@ -26,9 +26,8 @@ const router = express();
 //     logger.error(error);
 //   });
 
-const start = async () => {
-  await mongoose.connect(config.mongo.url);
 
+const start = () => {
   // CONFIG
   // router.use(express.urlencoded({ extended: true }));
   // router.use(express.json());
