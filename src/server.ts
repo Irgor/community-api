@@ -26,7 +26,9 @@ const router = express();
 //     logger.error(error);
 //   });
 
-const start = () => {
+const start = async () => {
+  await mongoose.connect(config.mongo.url);
+
   // CONFIG
   // router.use(express.urlencoded({ extended: true }));
   // router.use(express.json());
@@ -50,7 +52,7 @@ const start = () => {
 
   // PUBLIC ROUTES 
   // router.use('/users', userRoutes);
-  // router.use('/posts', publicPostRoutes);
+  router.use('/posts', publicPostRoutes);
   // router.use('/reports', reportsRoutes);
 
   // // AUTH MIDDLEWARE
