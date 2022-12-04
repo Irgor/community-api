@@ -5,6 +5,8 @@ import axios from "axios";
 import { errorWrapper } from "../middlewares/errorHandlerWrapper ";
 import Profile from "../models/Profile.model";
 import { ErrorMessages } from "../utils/errorMessages";
+import Post from "../models/Post.model";
+import { post } from "@routes/user.routes";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
     const {
@@ -84,4 +86,56 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).send(tokenRefreshed!.data);
 }
 
-export const userController = errorWrapper(signup, signin, refresh)
+const update = async (req: Request, res: Response) => {
+    const { id,
+        name,
+        nickname,
+        phone,
+        bio,
+        banner,
+        picture,
+    } = req.body;
+
+    const profile = await Profile.findById(id)
+
+    if (!profile) {
+        return res.status(404).send({ message: ErrorMessages.USER_NOT_FOUND });
+    }
+
+    profile.set({
+        name,
+        nickname,
+        phone,
+        bio,
+        banner,
+        picture
+    })
+
+    const updatedProfile = await profile.save().catch((error: any) => {
+        defaultCathError(ErrorMessages.UPDATE_USER_ERROR, error);
+    })
+
+    return res.status(200).send(updatedProfile)
+}
+
+const destroy = async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const { email } = req.body;
+
+    await Profile.findByIdAndDelete(id).catch(error => {
+        defaultCathError(ErrorMessages.DELETE_USER_ERROR, error);
+    });
+
+    const posts = await Post.find({ email, isBuyed: false });
+
+    if (posts) {
+        for(let post of posts) {
+            await post.delete();
+        }
+    }
+
+    return res.status(200).send({ deleted: true });
+}
+
+export const userController = errorWrapper(signup, signin, refresh, update, destroy)

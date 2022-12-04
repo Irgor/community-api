@@ -62,6 +62,9 @@ const start = () => {
 
   // ERROR HANDLER
   router.use((err: any, req: any, res: any, next: any) => {
+    if(err) {
+      console.log(err);
+    }
     res.status(err.status).send(err.message)
   })
 
