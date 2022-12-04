@@ -3,28 +3,27 @@ import express from 'express';
 import fileUpload from 'express-fileupload';
 import http from 'http';
 import mongoose from 'mongoose';
-import { config } from '@config/config'
-import logger from '@utils/logger';
+// import { config } from '@config/config'
+// import logger from '@utils/logger';
 
-import { auth } from '@middlewares/auth.middleware';
+// import { auth } from '@middlewares/auth.middleware';
 
-import userRoutes from '@routes/user.routes';
-import postRoutes from '@routes/post.routes';
-import reportsRoutes from '@routes/reports.routes';
-import publicPostRoutes from '@routes/publicPosts.routes';
+// import userRoutes from '@routes/user.routes';
+// import postRoutes from '@routes/post.routes';
+// import reportsRoutes from '@routes/reports.routes';
+// import publicPostRoutes from '@routes/publicPosts.routes';
 
 const router = express();
 
-mongoose.connect(config.mongo.url)
-  .then(() => {
-    logger.log('Mongo Connected');
-    start();
-  })
-  .catch((error) => {
-    logger.error('Unable to connect to mongo: ')
-    logger.error(error);
-  });
-
+// mongoose.connect(config.mongo.url)
+//   .then(() => {
+//     logger.log('Mongo Connected');
+//     start();
+//   })
+//   .catch((error) => {
+//     logger.error('Unable to connect to mongo: ')
+//     logger.error(error);
+//   });
 
 const start = () => {
   // CONFIG
@@ -67,3 +66,4 @@ const start = () => {
   // START SERVER
   http.createServer(router).listen(process.env.PORT || 3333, () => console.log(`Server is running on ${process.env.PORT || 3333}`))
 }
+start();
